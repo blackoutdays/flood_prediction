@@ -25,18 +25,20 @@ SECRET_KEY = "django-insecure-_o=)zeq81+$p_yjmz91(z^2@w0*1k43o2lzmpx%zn65*_3urkv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 # Application definition
 
 INSTALLED_APPS = [
+    'predictions',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +51,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "flood_prediction.urls"
+ROOT_URLCONF = "predictions.urls"
 
 TEMPLATES = [
     {
