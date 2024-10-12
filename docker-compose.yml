@@ -1,0 +1,30 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8003:82"
+      - "8004:8002"
+    depends_on:
+      - db
+    environment:
+      - RUNNING_IN_DOCKER=True
+      - DB_HOST=localhost
+#      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=flood_ai
+      - DB_USER=aruka
+      - DB_PASSWORD=aruka
+      - nano /var/lib/postgresql/data/pg_hba.confa
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: flood_ai
+      POSTGRES_USER: aruka
+      POSTGRES_PASSWORD: aruka
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
