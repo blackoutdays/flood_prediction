@@ -14,6 +14,7 @@ from .views import (
     UserProfileView,
     UserProfileCreateView,
     UserProfileRetrieveUpdateView,
+    UserRegistrationView,
 )
 
 # Swagger schema view configuration
@@ -34,10 +35,9 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
-
+    path('register/', UserRegistrationView.as_view(), name='user-registry'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     path('api/regions/', RegionListCreateView.as_view(), name='region-list-create'),
     path('api/regions/<int:pk>/', RegionRetrieveUpdateDestroyView.as_view(), name='region-detail'),
     path('api/cities/', CityListCreateView.as_view(), name='city-list-create'),

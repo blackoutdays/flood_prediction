@@ -1,58 +1,17 @@
 from django.http import JsonResponse
-from rest_framework import generics
-from .models import Region, City, District, UserProfile
-from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, UserRegistrationSerializer
+from rest_framework import generics, status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 import logging
+from .models import Region, City, District, UserProfile
+from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, UserRegistrationSerializer
+from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
 def home(request):
     return JsonResponse({"message": "Welcome to the test_microservice Service API!"})
-from rest_framework import generics
-from .models import Region, City, District, UserProfile
-from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer
-
-# Region CRUD Views
-class RegionListCreateView(generics.ListCreateAPIView):
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
-
-class RegionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
-
-# City CRUD Views
-class CityListCreateView(generics.ListCreateAPIView):
-    queryset = City.objects.all()
-    serializer_class = CitySerializer
-
-class CityRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = City.objects.all()
-    serializer_class = CitySerializer
-
-# District CRUD Views
-class DistrictListCreateView(generics.ListCreateAPIView):
-    queryset = District.objects.all()
-    serializer_class = DistrictSerializer
-
-class DistrictRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = District.objects.all()
-    serializer_class = DistrictSerializer
-
-# User Profile CRUD Views
-class UserProfileView(generics.RetrieveUpdateAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-
-class UserProfileCreateView(generics.CreateAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-
-class UserProfileRetrieveUpdateView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
 
 # Region CRUD Views
 class RegionListCreateView(generics.ListCreateAPIView):
@@ -100,7 +59,6 @@ class RegionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
-
 # City CRUD Views
 class CityListCreateView(generics.ListCreateAPIView):
     queryset = City.objects.all()
@@ -146,7 +104,6 @@ class CityRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
-
 
 # District CRUD Views
 class DistrictListCreateView(generics.ListCreateAPIView):
@@ -195,11 +152,18 @@ class DistrictRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         return super().delete(request, *args, **kwargs)
 
 
+
+
+
+
+
+
+
 # User Profile CRUD Views
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can access this view
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_description="Retrieve a user profile",
@@ -224,7 +188,6 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
 
-
 class UserProfileCreateView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -236,7 +199,6 @@ class UserProfileCreateView(generics.CreateAPIView):
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-
 
 class UserProfileRetrieveUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserProfile.objects.all()
@@ -263,3 +225,64 @@ class UserProfileRetrieveUpdateView(generics.RetrieveUpdateDestroyAPIView):
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
+
+
+class CityListView(generics.ListAPIView):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+
+    @swagger_auto_schema(
+        operation_description="Retrieve a list of cities",
+        responses={200: CitySerializer(many=True)}
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class UserRegistrationView(generics.CreateAPIView):
+    serializer_class = UserRegistrationSerializer
+
+    @swagger_auto_schema(
+        operation_description="User registration",
+        request_body=UserRegistrationSerializer,
+        responses={201: UserRegistrationSerializer}
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # Creating a user with first_name and last_name
+            user = User(
+                username=serializer.validated_data['username'],
+                email=serializer.validated_data['email'],
+                first_name=serializer.validated_data.get('first_name', ''),  # Optional
+                last_name=serializer.validated_data.get('last_name', ''),    # Optional
+            )
+            user.set_password(serializer.validated_data['password'])
+            user.save()
+
+            city_name = serializer.validated_data['city_name_en']
+            try:
+                city = City.objects.get(city_name_en=city_name)
+            except City.DoesNotExist:
+                return Response({"city_name_en": "City not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+            UserProfile.objects.create(
+                user=user,
+                age=serializer.validated_data['age'],
+                gender=serializer.validated_data['gender'],
+                city=city,
+                email=user.email
+            )
+
+            return Response({
+                "user": {
+                    "username": user.username,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "age": serializer.validated_data['age'],
+                    "gender": serializer.validated_data['gender'],
+                    "city": city_name
+                }
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
