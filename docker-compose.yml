@@ -2,8 +2,8 @@ services:
   web:
     build: .
     ports:
-      - "8003:82"
-      - "8004:8002"
+      - "80:80"
+      - "8000:8000"
     depends_on:
       - db
     environment:

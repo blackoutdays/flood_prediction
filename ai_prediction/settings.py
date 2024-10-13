@@ -2,9 +2,6 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
-import os
-from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-_o=)zeq81+$p_yjmz91(z^2@w0*1k43o2lzmpx%zn65*_3urkv"
@@ -65,6 +62,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', 'flood_ai'),
         'USER': os.getenv('DB_USER', 'aruka'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'aruka'),
+        # 'HOST': os.getenv('DB_HOST', 'db'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '5432'),
     }
@@ -131,10 +129,19 @@ LOGGING = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-DEBUG = False
+DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'aruka.larksss@gmail.com'
+EMAIL_HOST_PASSWORD = 'uytm dbtm jtsc dpnz' 
+DEFAULT_FROM_EMAIL = 'aruka.larksss@gmail.com'

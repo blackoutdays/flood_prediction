@@ -1,0 +1,36 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Django specific
+*.log
+*.sqlite3
+db.sqlite3
+*.pot
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDE specific files
+.idea/
+.vscode/
+
+# Static files
+staticfiles/
+media/
+
+# Local configuration files
+local_settings.py
+
+# Ignore all migrations
+*/migrations/*.py
+*/migrations/__pycache__/

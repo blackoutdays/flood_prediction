@@ -4,9 +4,13 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 import logging
-from .models import Region, City, District, UserProfile
+from .models import Region, City, District, UserProfile, Notification
 from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, UserRegistrationSerializer
 from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 logger = logging.getLogger(__name__)
 
@@ -239,6 +243,54 @@ class CityListView(generics.ListAPIView):
         return super().get(request, *args, **kwargs)
 
 
+# class UserRegistrationView(generics.CreateAPIView):
+#     serializer_class = UserRegistrationSerializer
+#
+#     @swagger_auto_schema(
+#         operation_description="User registration",
+#         request_body=UserRegistrationSerializer,
+#         responses={201: UserRegistrationSerializer}
+#     )
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         if serializer.is_valid():
+#             # Creating a user with first_name and last_name
+#             user = User(
+#                 username=serializer.validated_data['username'],
+#                 email=serializer.validated_data['email'],
+#                 first_name=serializer.validated_data.get('first_name', ''),  # Optional
+#                 last_name=serializer.validated_data.get('last_name', ''),    # Optional
+#             )
+#             user.set_password(serializer.validated_data['password'])
+#             user.save()
+#
+#             city_name = serializer.validated_data['city_name_en']
+#             try:
+#                 city = City.objects.get(city_name_en=city_name)
+#             except City.DoesNotExist:
+#                 return Response({"city_name_en": "City not found."}, status=status.HTTP_400_BAD_REQUEST)
+#
+#             UserProfile.objects.create(
+#                 user=user,
+#                 age=serializer.validated_data['age'],
+#                 gender=serializer.validated_data['gender'],
+#                 city=city,
+#                 email=user.email
+#             )
+#
+#             return Response({
+#                 "user": {
+#                     "username": user.username,
+#                     "email": user.email,
+#                     "first_name": user.first_name,
+#                     "last_name": user.last_name,
+#                     "age": serializer.validated_data['age'],
+#                     "gender": serializer.validated_data['gender'],
+#                     "city": city_name
+#                 }
+#             }, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
@@ -250,7 +302,6 @@ class UserRegistrationView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            # Creating a user with first_name and last_name
             user = User(
                 username=serializer.validated_data['username'],
                 email=serializer.validated_data['email'],
@@ -266,6 +317,7 @@ class UserRegistrationView(generics.CreateAPIView):
             except City.DoesNotExist:
                 return Response({"city_name_en": "City not found."}, status=status.HTTP_400_BAD_REQUEST)
 
+            # Create user profile
             UserProfile.objects.create(
                 user=user,
                 age=serializer.validated_data['age'],
@@ -273,6 +325,11 @@ class UserRegistrationView(generics.CreateAPIView):
                 city=city,
                 email=user.email
             )
+
+            # Send the email notification to the newly registered user
+            subject = "Welcome to the System"
+            message = "Hello {0}, welcome to our system!".format(user.first_name)
+            send_email_notification(subject, message, user.email)
 
             return Response({
                 "user": {
@@ -286,3 +343,28 @@ class UserRegistrationView(generics.CreateAPIView):
                 }
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+def create_notification(some_user):
+    # Create the notification object and store it in the database
+    notification = Notification.objects.create(
+        user=some_user,
+        message="You have a new notification!"
+    )
+
+    # Send the notification email
+    notification.send_email()
+
+def send_email_notification(subject, message, to_email):
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [to_email],
+            fail_silently=False,  # Это позволит видеть ошибки
+        )
+        print("Email sent successfully.")
+    except Exception as e:
+        print(f"Error sending email: {e}")

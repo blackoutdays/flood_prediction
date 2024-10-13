@@ -17,7 +17,6 @@ from .views import (
     UserRegistrationView,
 )
 
-# Swagger schema view configuration
 schema_view = get_schema_view(
     openapi.Info(
         title="Flood Prediction API",
