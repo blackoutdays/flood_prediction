@@ -8,3 +8,4 @@
 # Update serializers for new API version
 # Refactor serializers for better readability
 # Improve validation in serializers
+# Fix minor bug in serializers
