@@ -9,3 +9,4 @@
 # Refactor serializers for better readability
 # Improve validation in serializers
 # Fix minor bug in serializers
+# Improve error handling in serializers
