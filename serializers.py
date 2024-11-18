@@ -11,3 +11,4 @@
 # Fix minor bug in serializers
 # Improve error handling in serializers
 # Refactor serializers for clarity
+# Add serializer method for user data
