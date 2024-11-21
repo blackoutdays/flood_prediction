@@ -30,8 +30,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     age = serializers.IntegerField()
     gender = serializers.ChoiceField(choices=UserProfile.GENDER_CHOICES)
     city_name_en = serializers.CharField()
-    first_name = serializers.CharField(required=False)  # Добавляем поле имени
-    last_name = serializers.CharField(required=False)  # Добавляем поле фамилии
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
 
     class Meta:
         model = User
@@ -41,8 +41,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user = User(
             username=validated_data['username'],
             email=validated_data['email'],
-            first_name=validated_data.get('first_name', ''),  # Заполняем поле имени
-            last_name=validated_data.get('last_name', '')    # Заполняем поле фамилии
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', '')
         )
         user.set_password(validated_data['password'])
         user.save()

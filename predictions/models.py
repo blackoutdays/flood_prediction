@@ -78,9 +78,6 @@ class UserProfile(models.Model):
         verbose_name_plural = 'User Profiles'
 
 
-
-
-
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()

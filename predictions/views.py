@@ -326,7 +326,6 @@ class UserRegistrationView(generics.CreateAPIView):
                 email=user.email
             )
 
-            # Send the email notification to the newly registered user
             subject = "Welcome to the System"
             message = "Hello {0}, welcome to our system!".format(user.first_name)
             send_email_notification(subject, message, user.email)
@@ -344,16 +343,12 @@ class UserRegistrationView(generics.CreateAPIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 def create_notification(some_user):
-    # Create the notification object and store it in the database
     notification = Notification.objects.create(
         user=some_user,
         message="You have a new notification!"
     )
 
-    # Send the notification email
     notification.send_email()
 
 def send_email_notification(subject, message, to_email):
@@ -363,8 +358,46 @@ def send_email_notification(subject, message, to_email):
             message,
             settings.DEFAULT_FROM_EMAIL,
             [to_email],
-            fail_silently=False,  # Это позволит видеть ошибки
+            fail_silently=False,
         )
         print("Email sent successfully.")
     except Exception as e:
         print(f"Error sending email: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
