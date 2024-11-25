@@ -7,3 +7,4 @@
 # Improve performance
 # Update serializers for new API version
 # Refactor serializers for better readability
+# Improve validation in serializers

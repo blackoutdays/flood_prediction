@@ -4,3 +4,4 @@
 # Update logic
 # Optimize database model performance
 # Add new field to models for advanced features
+# Add indexing to models for faster queries
