@@ -9,3 +9,4 @@
 # Optimize models for database performance
 # Fix typo in models
 # Update models for new feature
+# Add model relationships for reports
