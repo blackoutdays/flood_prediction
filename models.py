@@ -18,3 +18,4 @@
 # Refactor models for better structure
 # Add logging to models
 # Improve indexing in models for efficiency
+# Enhance error handling in models
