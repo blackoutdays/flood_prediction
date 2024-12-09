@@ -15,3 +15,4 @@
 # Add indexing to models for faster queries
 # Fix database migration issue in models
 # Improve model validations
+# Refactor models for better structure
