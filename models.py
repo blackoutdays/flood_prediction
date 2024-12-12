@@ -10,3 +10,4 @@
 # Fix typo in models
 # Update models for new feature
 # Add model relationships for reports
+# Add default values in models
