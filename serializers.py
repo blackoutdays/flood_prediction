@@ -20,3 +20,4 @@
 # Simplify serializer logic for API endpoints
 # Enhance serializers with new validation rules
 # Add API versioning to serializers
+# Add custom serializers for reports
