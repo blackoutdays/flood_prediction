@@ -15,3 +15,4 @@
 # Add validation to serializers
 # Refactor serializers to reduce complexity
 # Improve serializer tests
+# Fix bug in serializers field handling
