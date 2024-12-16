@@ -21,3 +21,4 @@
 # Enhance error handling in models
 # Add indexing for key fields in models
 # Improve query performance in models
+# Add constraints to models for data integrity
