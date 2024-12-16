@@ -11,3 +11,4 @@
 # Update models for new feature
 # Add model relationships for reports
 # Add default values in models
+# Add new model for tracking analytics
