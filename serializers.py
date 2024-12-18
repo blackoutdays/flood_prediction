@@ -16,3 +16,4 @@
 # Refactor serializers to reduce complexity
 # Improve serializer tests
 # Fix bug in serializers field handling
+# Refactor serializers to improve maintainability
