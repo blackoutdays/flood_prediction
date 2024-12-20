@@ -12,3 +12,4 @@
 # Add model relationships for reports
 # Add default values in models
 # Add new model for tracking analytics
+# Add indexing to models for faster queries
