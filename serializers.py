@@ -17,3 +17,4 @@
 # Improve serializer tests
 # Fix bug in serializers field handling
 # Refactor serializers to improve maintainability
+# Simplify serializer logic for API endpoints
