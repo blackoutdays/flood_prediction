@@ -17,3 +17,4 @@
 # Improve model validations
 # Refactor models for better structure
 # Add logging to models
+# Improve indexing in models for efficiency
