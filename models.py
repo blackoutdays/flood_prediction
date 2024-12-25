@@ -13,3 +13,4 @@
 # Add default values in models
 # Add new model for tracking analytics
 # Add indexing to models for faster queries
+# Fix database migration issue in models
