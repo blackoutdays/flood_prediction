@@ -12,3 +12,4 @@
 # Improve error handling in serializers
 # Refactor serializers for clarity
 # Add serializer method for user data
+# Add validation to serializers
