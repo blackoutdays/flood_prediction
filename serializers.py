@@ -22,3 +22,4 @@
 # Add API versioning to serializers
 # Add custom serializers for reports
 # Add new serializers for analytics
+# Add new serializers for analytics
