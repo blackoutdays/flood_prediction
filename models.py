@@ -19,3 +19,4 @@
 # Add logging to models
 # Improve indexing in models for efficiency
 # Enhance error handling in models
+# Add indexing for key fields in models
