@@ -22,3 +22,4 @@
 # Add indexing for key fields in models
 # Improve query performance in models
 # Add constraints to models for data integrity
+# Refactor models for better scalability
