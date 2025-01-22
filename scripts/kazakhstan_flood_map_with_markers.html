@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_7006c069391ea4d3acbc2e170d25a395 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_7006c069391ea4d3acbc2e170d25a395" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_7006c069391ea4d3acbc2e170d25a395 = L.map(
+                "map_7006c069391ea4d3acbc2e170d25a395",
+                {
+                    center: [48.0196, 66.9237],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_1b41f177d3b3ecffe03063cc5b54b28e = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_1b41f177d3b3ecffe03063cc5b54b28e.addTo(map_7006c069391ea4d3acbc2e170d25a395);
+        
+    
+            var circle_marker_0c0a73c5a231baad9a9ca32777299ffd = L.circleMarker(
+                [43.238949, 76.889709],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 17, "stroke": true, "weight": 3}
+            ).addTo(map_7006c069391ea4d3acbc2e170d25a395);
+        
+    
+        var popup_3aeb8f0cb09f29dd4cfb5901b0b2da62 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_4f8732fbb555053eb6f8b740a28457ca = $(`<div id="html_4f8732fbb555053eb6f8b740a28457ca" style="width: 100.0%; height: 100.0%;"><b>Almaty</b><br>Water Level: 4.5 m<br>Temperature: 30.1 °C<br>Rainfall: 12 mm<br>Pressure: 950 hPa</div>`)[0];
+                popup_3aeb8f0cb09f29dd4cfb5901b0b2da62.setContent(html_4f8732fbb555053eb6f8b740a28457ca);
+            
+        
+
+        circle_marker_0c0a73c5a231baad9a9ca32777299ffd.bindPopup(popup_3aeb8f0cb09f29dd4cfb5901b0b2da62)
+        ;
+
+        
+    
+    
+            var circle_marker_fcf9362d402b4e2134e13021b485c37a = L.circleMarker(
+                [51.169392, 71.449074],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_7006c069391ea4d3acbc2e170d25a395);
+        
+    
+        var popup_b7c7009fdf290e225412f63ebc6f029a = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_2d6c44fb1a4d3b37178cbd0d96bef188 = $(`<div id="html_2d6c44fb1a4d3b37178cbd0d96bef188" style="width: 100.0%; height: 100.0%;"><b>Nur-Sultan</b><br>Water Level: 3.0 m<br>Temperature: 25.3 °C<br>Rainfall: 5 mm<br>Pressure: 960 hPa</div>`)[0];
+                popup_b7c7009fdf290e225412f63ebc6f029a.setContent(html_2d6c44fb1a4d3b37178cbd0d96bef188);
+            
+        
+
+        circle_marker_fcf9362d402b4e2134e13021b485c37a.bindPopup(popup_b7c7009fdf290e225412f63ebc6f029a)
+        ;
+
+        
+    
+    
+            var circle_marker_8ff6d9642bc709e86129eab9ae212d6b = L.circleMarker(
+                [42.3417, 69.5901],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 25, "stroke": true, "weight": 3}
+            ).addTo(map_7006c069391ea4d3acbc2e170d25a395);
+        
+    
+        var popup_372fa778a6f08d6642d1e1eb0b5a3571 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_49d9f0417cf4c6fd521b06b407aa7fbc = $(`<div id="html_49d9f0417cf4c6fd521b06b407aa7fbc" style="width: 100.0%; height: 100.0%;"><b>Shymkent</b><br>Water Level: 5.8 m<br>Temperature: 33.2 °C<br>Rainfall: 20 mm<br>Pressure: 945 hPa</div>`)[0];
+                popup_372fa778a6f08d6642d1e1eb0b5a3571.setContent(html_49d9f0417cf4c6fd521b06b407aa7fbc);
+            
+        
+
+        circle_marker_8ff6d9642bc709e86129eab9ae212d6b.bindPopup(popup_372fa778a6f08d6642d1e1eb0b5a3571)
+        ;
+
+        
+    
+    
+            var circle_marker_f8467066c1fdd9089b96f7def43a937b = L.circleMarker(
+                [53.2833, 69.4167],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 13, "stroke": true, "weight": 3}
+            ).addTo(map_7006c069391ea4d3acbc2e170d25a395);
+        
+    
+        var popup_1b4e4326bd38c6495b377f3a753ec99f = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_4970eddda79d79110adff15884347e4d = $(`<div id="html_4970eddda79d79110adff15884347e4d" style="width: 100.0%; height: 100.0%;"><b>Kokshetau</b><br>Water Level: 2.1 m<br>Temperature: 20.8 °C<br>Rainfall: 8 mm<br>Pressure: 970 hPa</div>`)[0];
+                popup_1b4e4326bd38c6495b377f3a753ec99f.setContent(html_4970eddda79d79110adff15884347e4d);
+            
+        
+
+        circle_marker_f8467066c1fdd9089b96f7def43a937b.bindPopup(popup_1b4e4326bd38c6495b377f3a753ec99f)
+        ;
+
+        
+    
+    
+            var circle_marker_38b15a6d50f0e89da32b98df4959a9c7 = L.circleMarker(
+                [49.8333, 73.1667],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_7006c069391ea4d3acbc2e170d25a395);
+        
+    
+        var popup_4c9d35ab41a1a493ea78eec0b39a04e1 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_9ef91f7095c405288d6cad05608da856 = $(`<div id="html_9ef91f7095c405288d6cad05608da856" style="width: 100.0%; height: 100.0%;"><b>Karaganda</b><br>Water Level: 3.5 m<br>Temperature: 22.5 °C<br>Rainfall: 10 mm<br>Pressure: 955 hPa</div>`)[0];
+                popup_4c9d35ab41a1a493ea78eec0b39a04e1.setContent(html_9ef91f7095c405288d6cad05608da856);
+            
+        
+
+        circle_marker_38b15a6d50f0e89da32b98df4959a9c7.bindPopup(popup_4c9d35ab41a1a493ea78eec0b39a04e1)
+        ;
+
+        
+    
+</script>
+</html>
