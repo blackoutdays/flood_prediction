@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.conf import settings
 
-
 class Region(models.Model):
     id_region = models.AutoField(primary_key=True)
     region_name_en = models.CharField(max_length=255, verbose_name="Region Name (English)")
@@ -16,6 +15,8 @@ class Region(models.Model):
     capital_name_kk = models.CharField(max_length=255, verbose_name="Capital Name (Kazakh)")
     latitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Latitude")
     longitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Longitude")
+    # flood_risk = models.IntegerField(default=0, verbose_name="Flood Risk")
+
 
     def __str__(self):
         return self.region_name_en

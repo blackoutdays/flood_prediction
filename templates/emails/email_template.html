@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Email</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* White background */
+            color: #333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #d1dce5;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        .email-header {
+            background: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
+        .email-body {
+            padding: 20px;
+            color: #555;
+        }
+        .email-body p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 0 0 15px;
+        }
+        .email-body ul {
+            margin: 15px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        .email-body ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #444;
+        }
+        .email-body ul li i {
+            font-size: 18px;
+            color: #0066cc;
+            margin-right: 10px;
+        }
+        .email-highlight {
+            background: #f8f9fc;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #0066cc;
+            font-size: 14px;
+            color: #333;
+            border-radius: 5px;
+        }
+        .email-footer {
+            background: #f8f9fc;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .email-footer .social-icons {
+            margin-top: 15px;
+        }
+        .email-footer .social-icons a {
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .email-footer .social-icons img {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.3s ease;
+        }
+        .email-footer .social-icons img:hover {
+            transform: scale(1.1);
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin-top: 20px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background: #004a99;
+        }
+        .app-links img {
+            height: 40px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            Welcome to Our Platform!
+        </div>
+        <div class="email-body">
+            <p>Dear {{ first_name }},</p>
+            <p>Thank you for registering with us. We're thrilled to have you on board!</p>
+            <p>Here are your account details:</p>
+            <ul>
+                <li><i>👤</i><strong>Username:</strong> {{ username }}</li>
+                <li><i>✉️</i><strong>Email:</strong> {{ email }}</li>
+                <li><i>📍</i><strong>City:</strong> {{ city }}</li>
+            </ul>
+            <div class="email-highlight">
+                🎉 <strong>Special Offer:</strong> Refer a friend and earn exclusive rewards!
+                <a href="https://yourwebsite.com/referral" style="color: #0066cc; text-decoration: none;">Learn More</a>
+            </div>
+            <a href="#" class="button">Get Started</a>
+        </div>
+        <div class="email-footer">
+            <p>Download our app for the best experience:</p>
+            <div class="app-links">
+                <a href="https://play.google.com/store/apps/details?id=com.yourapp" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+                </a>
+                <a href="https://apps.apple.com/app/id123456789" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store">
+                </a>
+            </div>
+            <p>Stay connected with us:</p>
+              <div class="social-icons">
+                <a href="https://t.me/yourtelegram" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+                </a>
+                <a href="https://instagram.com/yourinstagram" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
+                </a>
+                <a href="https://facebook.com/yourfacebook" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+                </a>
+                <a href="https://twitter.com/yourtwitter" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/X_icon.svg" alt="Twitter">
+                </a>
+            </div>
+            <p>© 2024 Your Company. All rights reserved.</p>
+            <a href="#" style="color: #0066cc; text-decoration: none;">Privacy Policy</a> |
+            <a href="#" style="color: #0066cc; text-decoration: none;">Unsubscribe</a>
+        </div>
+    </div>
+</body>
+</html>

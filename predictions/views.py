@@ -10,7 +10,22 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
-
+import folium
+from django.http import HttpResponse
+from django.shortcuts import render
+import os
+from django.conf import settings
+import requests
+from django.template.loader import render_to_string
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from django.contrib.auth import authenticate
+from rest_framework.renderers import JSONRenderer
+from django.core.mail import EmailMessage
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.contrib.auth.password_validation import validate_password
 
 logger = logging.getLogger(__name__)
 
@@ -243,54 +258,9 @@ class CityListView(generics.ListAPIView):
         return super().get(request, *args, **kwargs)
 
 
-# class UserRegistrationView(generics.CreateAPIView):
-#     serializer_class = UserRegistrationSerializer
-#
-#     @swagger_auto_schema(
-#         operation_description="User registration",
-#         request_body=UserRegistrationSerializer,
-#         responses={201: UserRegistrationSerializer}
-#     )
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         if serializer.is_valid():
-#             # Creating a user with first_name and last_name
-#             user = User(
-#                 username=serializer.validated_data['username'],
-#                 email=serializer.validated_data['email'],
-#                 first_name=serializer.validated_data.get('first_name', ''),  # Optional
-#                 last_name=serializer.validated_data.get('last_name', ''),    # Optional
-#             )
-#             user.set_password(serializer.validated_data['password'])
-#             user.save()
-#
-#             city_name = serializer.validated_data['city_name_en']
-#             try:
-#                 city = City.objects.get(city_name_en=city_name)
-#             except City.DoesNotExist:
-#                 return Response({"city_name_en": "City not found."}, status=status.HTTP_400_BAD_REQUEST)
-#
-#             UserProfile.objects.create(
-#                 user=user,
-#                 age=serializer.validated_data['age'],
-#                 gender=serializer.validated_data['gender'],
-#                 city=city,
-#                 email=user.email
-#             )
-#
-#             return Response({
-#                 "user": {
-#                     "username": user.username,
-#                     "email": user.email,
-#                     "first_name": user.first_name,
-#                     "last_name": user.last_name,
-#                     "age": serializer.validated_data['age'],
-#                     "gender": serializer.validated_data['gender'],
-#                     "city": city_name
-#                 }
-#             }, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# ------------------- User Registration -------------------
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
@@ -302,22 +272,27 @@ class UserRegistrationView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            user = User(
+            # Проверка на существование пользователя
+            if User.objects.filter(username=serializer.validated_data['username']).exists():
+                return Response({"error": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Создание пользователя
+            user = User.objects.create_user(
                 username=serializer.validated_data['username'],
                 email=serializer.validated_data['email'],
-                first_name=serializer.validated_data.get('first_name', ''),  # Optional
-                last_name=serializer.validated_data.get('last_name', ''),    # Optional
+                password=serializer.validated_data['password'],
+                first_name=serializer.validated_data.get('first_name', ''),
+                last_name=serializer.validated_data.get('last_name', '')
             )
-            user.set_password(serializer.validated_data['password'])
-            user.save()
 
+            # Проверка существования города
             city_name = serializer.validated_data['city_name_en']
             try:
                 city = City.objects.get(city_name_en=city_name)
             except City.DoesNotExist:
                 return Response({"city_name_en": "City not found."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Create user profile
+            # Создание профиля пользователя
             UserProfile.objects.create(
                 user=user,
                 age=serializer.validated_data['age'],
@@ -326,9 +301,18 @@ class UserRegistrationView(generics.CreateAPIView):
                 email=user.email
             )
 
+            # Отправка email
             subject = "Welcome to the System"
-            message = "Hello {0}, welcome to our system!".format(user.first_name)
-            send_email_notification(subject, message, user.email)
+            template_name = "emails/email_template.html"
+            context = {
+                "first_name": user.first_name,
+                "username": user.username,
+                "email": user.email,
+                "city": city_name
+            }
+            email_sent = send_email_notification(subject, template_name, context, user.email)
+            if not email_sent:
+                logger.error("Email notification failed for user: %s", user.username)
 
             return Response({
                 "user": {
@@ -343,61 +327,100 @@ class UserRegistrationView(generics.CreateAPIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def create_notification(some_user):
-    notification = Notification.objects.create(
-        user=some_user,
-        message="You have a new notification!"
-    )
 
-    notification.send_email()
+# ------------------- User Login -------------------
 
-def send_email_notification(subject, message, to_email):
+
+class UserLoginView(APIView):
+    """
+    Аутентификация пользователя по username и паролю.
+    """
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        if not username or not password:
+            return Response({'error': 'Username и пароль обязательны'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Аутентификация пользователя
+        user = authenticate(username=username, password=password)
+
+        if user:
+            # Генерация JWT токенов
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'username': user.username,
+            }, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# ------------------- Utility Functions -------------------
+def create_notification(user, message):
+    """Создает уведомление для пользователя и отправляет email."""
     try:
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [to_email],
-            fail_silently=False,
-        )
-        print("Email sent successfully.")
+        notification = Notification.objects.create(user=user, message=message)
+        notification.send_email()
     except Exception as e:
-        print(f"Error sending email: {e}")
+        logger.error(f"Error creating notification for user {user.username}: {e}")
 
 
+def send_email_notification(subject, template_name, context, to_email):
+    """Отправка email уведомления с использованием HTML шаблона."""
+    try:
+        html_message = render_to_string(template_name, context)
+        email = EmailMessage(
+            subject,
+            html_message,
+            settings.DEFAULT_FROM_EMAIL,
+            [to_email]
+        )
+        email.content_subtype = "html"
+        email.send()
+        logger.info(f"Email sent successfully to {to_email}")
+        print(f"Email sent successfully to {to_email}")  # Для отладки
+        return True
+    except Exception as e:
+        logger.error(f"Error sending email to {to_email}: {e}")
+        print(f"Error sending email to {to_email}: {e}")  # Для отладки
+        return False
 
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
+        user = request.user
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
 
+        if not user.check_password(old_password):
+            return Response({'error': 'Incorrect old password'}, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            validate_password(new_password, user)
+            user.set_password(new_password)
+            user.save()
+            return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # class UserLoginView(APIView):
+        #     renderer_classes = [JSONRenderer]
+        #
+        #     def post(self, request, *args, **kwargs):
+        #         username = request.data.get('username')
+        #         password = request.data.get('password')
+        #         user = authenticate(request, username=username, password=password)
+        #
+        #         if user:
+        #             refresh = RefreshToken.for_user(user)
+        #             return Response({
+        #                 'refresh': str(refresh),
+        #                 'access': str(refresh.access_token),
+        #                 'username': user.username,
+        #             }, status=status.HTTP_200_OK)
+        #
+        #         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        #
