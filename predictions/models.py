@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 
 class Region(models.Model):
     id_region = models.AutoField(primary_key=True)
@@ -13,6 +15,8 @@ class Region(models.Model):
     capital_name_kk = models.CharField(max_length=255, verbose_name="Capital Name (Kazakh)")
     latitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Latitude")
     longitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Longitude")
+    # flood_risk = models.IntegerField(default=0, verbose_name="Flood Risk")
+
 
     def __str__(self):
         return self.region_name_en
@@ -73,3 +77,23 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = 'User Profile'
         verbose_name_plural = 'User Profiles'
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notification for {self.user} - {self.message}"
+
+    def send_email(self):
+        # Send email notification
+        send_mail(
+            subject='New Notification',
+            message=self.message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.user.email],
+            fail_silently=False,
+        )
