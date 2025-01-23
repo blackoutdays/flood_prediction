@@ -1,9 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 import os
-
-import os
-from pathlib import Path
+from decouple import config
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +10,9 @@ SECRET_KEY = "django-insecure-_o=)zeq81+$p_yjmz91(z^2@w0*1k43o2lzmpx%zn65*_3urkv
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
     'predictions',
@@ -25,10 +26,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -38,12 +41,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "predictions.urls"
+ROOT_URLCONF = "ai_prediction.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -58,17 +61,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "ai_prediction.wsgi.application"
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'flood_ai'),
-        'USER': os.getenv('DB_USER', 'aruka'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'aruka'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': config('DB_NAME', default='flood_ai'),
+        'USER': config('DB_USER', default='aruka'),
+        'PASSWORD': config('DB_PASSWORD', default='aruka'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -90,14 +95,19 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+TEMPLATES[0]['DIRS'] += [os.path.join(BASE_DIR, 'templates')]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.HTMLFormRenderer',
     ),
 }
 
@@ -111,30 +121,46 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'django_debug.log',
-        },
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',  # Показывать только важные сообщения
             'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
+            'handlers': ['console'],
+            'level': 'INFO',  # Логировать только INFO и выше
             'propagate': True,
         },
     },
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-DEBUG = False
+DEBUG = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
+CSRF_TRUSTED_ORIGINS = ['https://286d-94-247-135-103.ngrok-free.app']
+
+DEFAULT_CHARSET = 'utf-8'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'aruka.larksss@gmail.com'
+EMAIL_HOST_PASSWORD = 'uytm dbtm jtsc dpnz'
+DEFAULT_FROM_EMAIL = 'aruka.larksss@gmail.com'
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Russian')),
+    ('kk', _('Kazakh')),
+]
+
+LANGUAGE_CODE = 'en'  # Язык по умолчанию
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
