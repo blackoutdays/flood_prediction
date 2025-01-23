@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 import logging
-from .models import Region, City, District, UserProfile, Notification
-from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, UserRegistrationSerializer
+from .models import Region, City, District, UserProfile, Notification, WeatherData
+from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, \
+    UserRegistrationSerializer, WeatherDataSerializer
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.core.mail import send_mail
@@ -329,8 +330,6 @@ class UserRegistrationView(generics.CreateAPIView):
 
 
 # ------------------- User Login -------------------
-
-
 class UserLoginView(APIView):
     """
     Аутентификация пользователя по username и паролю.
@@ -424,3 +423,16 @@ class ChangePasswordView(APIView):
         #
         #         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         #
+
+class WeatherDataAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="Retrieve all weather data",
+        responses={
+            200: WeatherDataSerializer(many=True),
+            400: "Bad Request",
+        },
+    )
+    def get(self, request):
+        weather_data = WeatherData.objects.all()
+        serializer = WeatherDataSerializer(weather_data, many=True)
+        return Response(serializer.data)
