@@ -17,7 +17,6 @@ class Region(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Longitude")
     # flood_risk = models.IntegerField(default=0, verbose_name="Flood Risk")
 
-
     def __str__(self):
         return self.region_name_en
 
@@ -133,5 +132,5 @@ class WeatherData(models.Model):
         return f"Weather Data ({self.date})"
 
     class Meta:
-        verbose_name = "ИИ предикшин Атырау"
-        verbose_name_plural = "ИИ предикшин Атырау"
+        verbose_name = "AI flood"
+        verbose_name_plural = "AI flood prediction"
