@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
-from .models import Region, City, District, UserProfile
+from .models import Region, City, District, UserProfile, WeatherData
 from django.contrib.auth.models import User
 
 class RegionSerializer(serializers.ModelSerializer):
@@ -84,3 +84,8 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+class WeatherDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeatherData
+        fields = '__all__'
