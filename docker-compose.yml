@@ -1,30 +1,64 @@
+#services:
+#  web:
+#    build:
+#      context: .
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - .:/app
+#      - ./static:/app/static
+#    command: python manage.py runserver 0.0.0.0:8000
+#    depends_on:
+#      - db
+#    environment:
+#      - DEBUG=True
+#      - DB_NAME=flood_ai
+#      - DB_USER=aruka
+#      - DB_PASSWORD=aruka
+#      - DB_HOST=db
+#      - DB_PORT=5432
+#
+#  db:
+#    image: postgres:13
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: flood_ai
+#      POSTGRES_USER: aruka
+#      POSTGRES_PASSWORD: aruka
+#
+#volumes:
+#  postgres_data:
+version: '3.8'
+
 services:
   web:
-    build: .
+    build:
+      context: .
     ports:
-      - "8003:82"
-      - "8004:8002"
+      - "8000:8000"  # Пробрасываем порт 8000
+    volumes:
+      - .:/app
+      - ./static:/app/static
+    command: python manage.py runserver 0.0.0.0:8000  # Команда для запуска FastAPI, которая будет слушать все интерфейсы
     depends_on:
-      - db
+      - db  # Убедитесь, что контейнер web зависит от db
     environment:
-      - RUNNING_IN_DOCKER=True
-      - DB_HOST=localhost
-#      - DB_HOST=db
-      - DB_PORT=5432
+      - DEBUG=True
       - DB_NAME=flood_ai
       - DB_USER=aruka
       - DB_PASSWORD=aruka
-      - nano /var/lib/postgresql/data/pg_hba.confa
+      - DB_HOST=db
+      - DB_PORT=5432
+
   db:
     image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: flood_ai
       POSTGRES_USER: aruka
       POSTGRES_PASSWORD: aruka
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
 volumes:
   postgres_data:
