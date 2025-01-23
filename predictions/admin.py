@@ -31,4 +31,10 @@ class UserProfileAdmin(admin.ModelAdmin):
     def last_name(self, obj):
         return obj.user.last_name
 
+@admin.register(District)
+class DistrictAdmin(admin.ModelAdmin):
+    list_display = ('district_name_en', 'district_name_ru', 'district_name_kk', 'population', 'area', 'city')
+    search_fields = ('district_name_en', 'district_name_ru', 'district_name_kk')
+    list_filter = ('city', 'population')
 admin.site.register(UserProfile, UserProfileAdmin)
+
