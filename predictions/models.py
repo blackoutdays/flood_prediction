@@ -97,3 +97,41 @@ class Notification(models.Model):
             recipient_list=[self.user.email],
             fail_silently=False,
         )
+
+class WeatherData(models.Model):
+    air_temp_avg = models.FloatField(verbose_name="Средняя температура воздуха")
+    air_temp_max = models.FloatField(verbose_name="Максимальная температура воздуха")
+    air_temp_min = models.FloatField(verbose_name="Минимальная температура воздуха")
+    soil_temp_avg = models.FloatField(verbose_name="Средняя температура почвы")
+    soil_temp_max = models.FloatField(verbose_name="Максимальная температура почвы")
+    soil_temp_min = models.FloatField(verbose_name="Минимальная температура почвы")
+    dew_point_min = models.FloatField(verbose_name="Минимальная точка росы")
+    vapor_pressure_avg = models.FloatField(verbose_name="Среднее парциальное давление")
+    humidity_avg = models.FloatField(verbose_name="Средняя влажность")
+    humidity_min = models.FloatField(verbose_name="Минимальная влажность")
+    saturation_deficit_avg = models.FloatField(verbose_name="Средний дефицит насыщения")
+    saturation_deficit_max = models.FloatField(verbose_name="Максимальный дефицит насыщения")
+    pressure_station = models.FloatField(verbose_name="Давление на уровне станции")
+    pressure_sea = models.FloatField(verbose_name="Давление на уровне моря")
+    cloud_total = models.FloatField(verbose_name="Общая облачность")
+    cloud_lower = models.FloatField(verbose_name="Нижняя облачность")
+    wind_speed_avg = models.FloatField(verbose_name="Средняя скорость ветра")
+    wind_speed_max = models.FloatField(verbose_name="Максимальная скорость ветра")
+    wind_speed_abs_max = models.FloatField(verbose_name="Абсолютная максимальная скорость ветра")
+    precipitation = models.FloatField(verbose_name="Количество осадков")
+    soil_condition_code = models.IntegerField(verbose_name="Код состояния почвы")
+    snow_cover_state = models.IntegerField(verbose_name="Состояние снежного покрова")
+    snow_cover_height_cm = models.FloatField(verbose_name="Высота снежного покрова, см")
+    date = models.DateTimeField(verbose_name="Дата")
+    flood_risk = models.FloatField(verbose_name="Риск паводков")
+    week = models.IntegerField(verbose_name="Неделя")
+    flood_risk_week = models.FloatField(verbose_name="Риск паводков (неделя)")
+    month = models.IntegerField(verbose_name="Месяц")
+    flood_risk_month = models.FloatField(verbose_name="Риск паводков (месяц)")
+
+    def __str__(self):
+        return f"Weather Data ({self.date})"
+
+    class Meta:
+        verbose_name = "ИИ предикшин Атырау"
+        verbose_name_plural = "ИИ предикшин Атырау"
