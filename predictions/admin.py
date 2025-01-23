@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Region, City, District, UserProfile
-from django.contrib.auth.models import User
+from .models import Region, City, District, UserProfile, WeatherData
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
@@ -31,10 +30,16 @@ class UserProfileAdmin(admin.ModelAdmin):
     def last_name(self, obj):
         return obj.user.last_name
 
-@admin.register(District)
-class DistrictAdmin(admin.ModelAdmin):
-    list_display = ('district_name_en', 'district_name_ru', 'district_name_kk', 'population', 'area', 'city')
-    search_fields = ('district_name_en', 'district_name_ru', 'district_name_kk')
-    list_filter = ('city', 'population')
+
+@admin.register(WeatherData)
+class WeatherDataAdmin(admin.ModelAdmin):
+    list_display = (
+        "date", "air_temp_avg", "air_temp_max", "air_temp_min",
+        "soil_temp_avg", "soil_temp_max", "soil_temp_min",
+        "flood_risk", "flood_risk_week", "flood_risk_month"
+    )
+    search_fields = ("date", "air_temp_avg", "flood_risk")
+    list_filter = ("date", "flood_risk_month", "flood_risk_week")
+
 admin.site.register(UserProfile, UserProfileAdmin)
 
