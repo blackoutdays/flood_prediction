@@ -19,3 +19,5 @@ def main():
 if __name__ == "__main__":
     main()
 # Add new visualization for flood zones
+# Add new visualization for flood zones git add manage.py
+# Optimize rainfall data analysis git add manage.py
