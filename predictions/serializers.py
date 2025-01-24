@@ -25,7 +25,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['gender', 'age', 'city', 'email']
 
-
 class UserRegistrationSerializer(serializers.ModelSerializer):
     age = serializers.IntegerField()
     gender = serializers.ChoiceField(choices=UserProfile.GENDER_CHOICES)
@@ -61,7 +60,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         )
 
         return user
-
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
