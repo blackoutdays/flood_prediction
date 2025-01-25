@@ -2,8 +2,9 @@ FROM python:3.10-slim AS base
 
 WORKDIR /app
 
+# Установка PostgreSQL-клиента и других необходимых пакетов
 RUN apt-get update && \
-    apt-get install -y nginx && \
+    apt-get install -y nginx postgresql-client && \
     apt-get clean
 
 COPY requirements.txt /app/
