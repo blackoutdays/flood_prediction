@@ -1,7 +1,5 @@
-#!/usr/bin/env python
 import os
 import sys
-
 
 def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ai_prediction.settings")
@@ -18,6 +16,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-# Add new visualization for flood zones
-# Add new visualization for flood zones git add manage.py
-# Optimize rainfall data analysis git add manage.py
