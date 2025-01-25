@@ -9,7 +9,6 @@ services:
     volumes:
       - .:/app
       - ./static:/app/static
-    command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
     environment:
@@ -19,11 +18,20 @@ services:
       - DB_PASSWORD=aruka
       - DB_HOST=db
       - DB_PORT=5432
+    command: >
+      bash -c "
+      echo 'Ждём, пока база данных станет доступной...';
+      until PGPASSWORD=aruka psql -h db -U aruka -d flood_ai -c 'SELECT 1;' 2>/dev/null; do
+        sleep 3;
+      done;
+      echo 'База данных готова! Запускаем Django...';
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
 
   db:
+    image: postgres:13
     ports:
       - "5432:5432"
-    image: postgres:13
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
