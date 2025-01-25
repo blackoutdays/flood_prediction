@@ -64,11 +64,11 @@ WSGI_APPLICATION = "ai_prediction.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='flood_ai'),
-        'USER': config('DB_USER', default='aruka'),
-        'PASSWORD': config('DB_PASSWORD', default='aruka'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+        'NAME': 'flood_ai',
+        'USER': 'aruka',
+        'PASSWORD': 'aruka',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
