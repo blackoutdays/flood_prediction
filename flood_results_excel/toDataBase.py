@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 # Задайте путь к Excel файлу
-excel_file = "/Users/aruka/Desktop/flood_prediction_ai/flood_results_excel/Zhezkazgan_r.xlsx"  # Укажите ваш файл
+excel_file = "/Users/aruka/Desktop/flood_prediction_ai/flood_results_excel/Aktau_r.xlsx"  # Укажите ваш файл
 
 # Считываем данные из Excel
 df = pd.read_excel(excel_file)
@@ -26,7 +26,7 @@ db_url = "postgresql://aruka:aruka@localhost:5432/flood_ai"
 engine = create_engine(db_url)
 
 # Укажите точное имя таблицы в базе данных
-table_name = "predictions_Zhezkazgan"
+table_name = "predictions_weatherdata"
 
 # Записываем данные в таблицу
 df.to_sql(table_name, engine, if_exists="append", index=False, schema="public")
