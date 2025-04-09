@@ -15,7 +15,7 @@ from predictions.views import (
     UserProfileCreateView,
     UserProfileRetrieveUpdateView,
     UserRegistrationView,
-    ChangePasswordView, WeatherDataAPIView
+    ChangePasswordView, WeatherDataAPIView, WeatherDataCityView
 )
 
 # Swagger schema view
@@ -59,4 +59,6 @@ urlpatterns = [
     path('api/user-profile/create/', UserProfileCreateView.as_view(), name='user-profile-create'),
     path('api/user-profile/<int:pk>/', UserProfileRetrieveUpdateView.as_view(), name='user-profile-detail'),
     path('api/weather-data/', WeatherDataAPIView.as_view(), name='weather-data'),
+    path('api/weather-data/by-city/', WeatherDataCityView.as_view(), name='weather-data-by-city'),
+
 ]

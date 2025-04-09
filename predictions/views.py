@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from drf_yasg import openapi
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 import logging
@@ -383,3 +384,28 @@ class WeatherDataAPIView(APIView):
         weather_data = WeatherData.objects.all()
         serializer = WeatherDataSerializer(weather_data, many=True)
         return Response(serializer.data)
+
+class WeatherDataCityView(APIView):
+    @swagger_auto_schema(
+        operation_description="Get weather data by city",
+        manual_parameters=[
+            openapi.Parameter('city', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=True, description='City name (например: aktau)')
+        ],
+        responses={200: "Success", 400: "Bad request"}
+    )
+    def get(self, request):
+        city = request.GET.get("city")
+        if not city:
+            return Response({"error": "Missing 'city' parameter"}, status=400)
+
+        table_name = f"weatherdata_{city.lower()}"
+
+        from django.db import connection
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(f"SELECT * FROM {table_name} LIMIT 100;")
+                columns = [col[0] for col in cursor.description]
+                data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            return Response(data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)

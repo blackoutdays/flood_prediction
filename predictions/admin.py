@@ -30,7 +30,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     def last_name(self, obj):
         return obj.user.last_name
 
-
 @admin.register(WeatherData)
 class WeatherDataAdmin(admin.ModelAdmin):
     list_display = (
