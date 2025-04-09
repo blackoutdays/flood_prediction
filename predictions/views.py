@@ -1,39 +1,26 @@
 from django.http import JsonResponse
-from rest_framework import generics, status
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 import logging
-from .models import Region, City, District, UserProfile, Notification, WeatherData
-from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, \
-    UserRegistrationSerializer, WeatherDataSerializer
 from django.contrib.auth.models import User
-from django.shortcuts import render
-from django.core.mail import send_mail
 from django.conf import settings
-import folium
-from django.http import HttpResponse
-from django.shortcuts import render
-import os
-from django.conf import settings
-import requests
 from django.template.loader import render_to_string
-from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status
+from rest_framework import status, generics
 from django.contrib.auth import authenticate
-from rest_framework.renderers import JSONRenderer
 from django.core.mail import EmailMessage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.password_validation import validate_password
+from .models import Region, City, District, UserProfile, Notification, WeatherData
+from .serializers import RegionSerializer, CitySerializer, DistrictSerializer, UserProfileSerializer, \
+    UserRegistrationSerializer, WeatherDataSerializer
 
 logger = logging.getLogger(__name__)
 
 def home(request):
     return JsonResponse({"message": "Welcome to the test_microservice Service API!"})
 
-# Region CRUD Views
 class RegionListCreateView(generics.ListCreateAPIView):
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
@@ -79,7 +66,6 @@ class RegionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
-# City CRUD Views
 class CityListCreateView(generics.ListCreateAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializer
@@ -125,7 +111,6 @@ class CityRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
-# District CRUD Views
 class DistrictListCreateView(generics.ListCreateAPIView):
     queryset = District.objects.all()
     serializer_class = DistrictSerializer
@@ -171,15 +156,6 @@ class DistrictRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
-
-
-
-
-
-
-
-
-# User Profile CRUD Views
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -246,7 +222,6 @@ class UserProfileRetrieveUpdateView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
-
 class CityListView(generics.ListAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializer
@@ -258,10 +233,6 @@ class CityListView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
-
-
-
-# ------------------- User Registration -------------------
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
@@ -328,8 +299,6 @@ class UserRegistrationView(generics.CreateAPIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# ------------------- User Login -------------------
 class UserLoginView(APIView):
     """
     Аутентификация пользователя по username и паролю.
@@ -355,8 +324,6 @@ class UserLoginView(APIView):
 
         return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
-
-# ------------------- Utility Functions -------------------
 def create_notification(user, message):
     """Создает уведомление для пользователя и отправляет email."""
     try:
@@ -364,7 +331,6 @@ def create_notification(user, message):
         notification.send_email()
     except Exception as e:
         logger.error(f"Error creating notification for user {user.username}: {e}")
-
 
 def send_email_notification(subject, template_name, context, to_email):
     """Отправка email уведомления с использованием HTML шаблона."""
@@ -404,25 +370,6 @@ class ChangePasswordView(APIView):
             return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        # class UserLoginView(APIView):
-        #     renderer_classes = [JSONRenderer]
-        #
-        #     def post(self, request, *args, **kwargs):
-        #         username = request.data.get('username')
-        #         password = request.data.get('password')
-        #         user = authenticate(request, username=username, password=password)
-        #
-        #         if user:
-        #             refresh = RefreshToken.for_user(user)
-        #             return Response({
-        #                 'refresh': str(refresh),
-        #                 'access': str(refresh.access_token),
-        #                 'username': user.username,
-        #             }, status=status.HTTP_200_OK)
-        #
-        #         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        #
 
 class WeatherDataAPIView(APIView):
     @swagger_auto_schema(

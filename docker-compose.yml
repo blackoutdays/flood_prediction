@@ -24,7 +24,7 @@ services:
       until PGPASSWORD=aruka psql -h db -U aruka -d flood_ai -c 'SELECT 1;' 2>/dev/null; do
         sleep 3;
       done;
-      echo 'База данных готова! Запускаем Django...';
+      echo 'БД готова! Запускаем Django...';
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:8000"
 

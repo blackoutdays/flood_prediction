@@ -15,7 +15,6 @@ class Region(models.Model):
     capital_name_kk = models.CharField(max_length=255, verbose_name="Capital Name (Kazakh)")
     latitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Latitude")
     longitude = models.DecimalField(max_digits=10, decimal_places=7, verbose_name="Longitude")
-    # flood_risk = models.IntegerField(default=0, verbose_name="Flood Risk")
 
     def __str__(self):
         return self.region_name_en
@@ -132,5 +131,7 @@ class WeatherData(models.Model):
         return f"Weather Data ({self.date})"
 
     class Meta:
+        managed = False
+        db_table = 'placeholder'
         verbose_name = "AI flood"
         verbose_name_plural = "AI flood prediction"
