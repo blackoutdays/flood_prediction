@@ -3,7 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 FOLDER_PATH = os.path.dirname(__file__)
-DB_URL = "postgresql://aruka:aruka@localhost:5432/flood_ai"
+DB_URL = "postgresql://aruka:aruka@db:5432/flood_ai"
 engine = create_engine(DB_URL)
 
 COLUMNS = [
