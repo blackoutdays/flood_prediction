@@ -403,7 +403,7 @@ class WeatherDataCityView(APIView):
         from django.db import connection
         try:
             with connection.cursor() as cursor:
-                cursor.execute(f"SELECT * FROM {table_name} LIMIT 100;")
+                cursor.execute(f"SELECT * FROM {table_name} LIMIT 500;")
                 columns = [col[0] for col in cursor.description]
                 data = [dict(zip(columns, row)) for row in cursor.fetchall()]
             return Response(data)
