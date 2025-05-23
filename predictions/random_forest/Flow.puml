@@ -1,0 +1,45 @@
+@startuml
+skinparam backgroundColor #ffffff
+skinparam ArrowColor #2c3e50
+skinparam SequenceBoxBackgroundColor #ecf0f1
+skinparam SequenceBoxBorderColor #ffffff
+skinparam ActorBorderColor black
+skinparam ActorFontColor black
+skinparam ActorBackgroundColor #d6eaf8
+
+actor User
+actor Authorities as "Local Authorities"
+
+box "🟦 Data Preparation Phase" #dff9fb
+  User -> DataSource: Upload Kazhydromet dataset\n(historical & real-time)
+  DataSource -> Preprocessing: Clean missing values\nRemove outliers, normalize
+  Preprocessing -> FeatureEngineering: Extract features\n(e.g. rainfall, river level)
+  FeatureEngineering -> DataSplitter: Split data\ninto training & testing sets
+end box
+
+box "🟥 Model Training Phase" #f9ebea
+  DataSplitter -> RandomForestModel: Train Random Forest model
+  RandomForestModel -> Metrics: Evaluate with metrics\n(accuracy, recall, precision)
+  Metrics -> RandomForestModel: Return optimized model
+end box
+
+== 🟩 Prediction Phase ==
+box "🟩 Prediction Phase" #d4efdf
+  User -> DataSource: Input new real-time data
+  DataSource -> Preprocessing: Pre-process data (same steps)
+  Preprocessing -> RandomForestModel: Predict flood risk
+  RandomForestModel -> Prediction: Generate predictions
+  Prediction -> WarningSystem: Check thresholds\nValidate predictions
+end box
+
+== 🟨 Warning System ==
+box "🟨 Warning System" #fdebd0
+  WarningSystem -> Authorities: Send flood warnings
+  WarningSystem -> User: Notify users via alerts
+  Authorities -> User: Provide emergency updates
+end box
+@enduml
+
+
+
+
