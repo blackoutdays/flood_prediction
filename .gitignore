@@ -1,5 +1,12 @@
-
-
-# IntelliJ project files
-.idea
-
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*/.pytest_cache/
+*.sqlite3
+db.sqlite3
+/media/
