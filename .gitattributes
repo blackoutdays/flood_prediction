@@ -1,3 +1,4 @@
 */migrations/*.py linguist-generated
 static/js/**/*.js linguist-generated
 static/css/**/*.css linguist-generated
+node_modules/ linguist-generated
