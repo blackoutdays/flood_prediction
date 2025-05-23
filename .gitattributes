@@ -1,9 +1,17 @@
 */migrations/*.py linguist-generated
 
 **/*.xml linguist-generated
-.
-static/js/**/*.js linguist-generated
-static/css/**/*.css linguist-generated
+
+static/**/*.js linguist-generated
+static/**/*.css linguist-generated
+
+statictics/**/*.js linguist-generated
+statictics/**/*.css linguist-generated
+
+dist/ linguist-generated
+build/ linguist-generated
+public/ linguist-generated
+
 node_modules/ linguist-generated
 
 *.log linguist-generated
