@@ -3,3 +3,4 @@ static/js/**/*.js linguist-generated
 static/css/**/*.css linguist-generated
 node_modules/ linguist-generated
 data/*.xml linguist-generated
+**/*.xml linguist-generated
