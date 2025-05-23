@@ -67,7 +67,7 @@ DATABASES = {
         'NAME': 'flood_ai',
         'USER': 'aruka',
         'PASSWORD': 'aruka',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
