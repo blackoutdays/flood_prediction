@@ -5,3 +5,5 @@ node_modules/ linguist-generated
 data/*.xml linguist-generated
 **/*.xml linguist-generated
 *.log linguist-generated
+*.sqlite3 linguist-generated
+
