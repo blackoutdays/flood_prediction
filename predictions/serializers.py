@@ -67,12 +67,10 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         fields = ['gender', 'age', 'city', 'email']
 
     def update(self, instance, validated_data):
-        # Обновляем поля профиля пользователя
         instance.gender = validated_data.get('gender', instance.gender)
         instance.age = validated_data.get('age', instance.age)
         instance.email = validated_data.get('email', instance.email)
 
-        # Обновляем город, если он указан
         city_name_en = validated_data.get('city_name_en', None)
         if city_name_en:
             try:
