@@ -6,4 +6,4 @@ data/*.xml linguist-generated
 **/*.xml linguist-generated
 *.log linguist-generated
 *.sqlite3 linguist-generated
-
+*.db linguist-generated
