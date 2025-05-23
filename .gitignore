@@ -16,5 +16,5 @@ db.sqlite3
 
 /build/
 /dist/
-
+staticfiles
 ai_prediction/flood_results_excel
